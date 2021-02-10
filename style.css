@@ -1,4 +1,14 @@
 body
 {
 	background-image: url("img/tlo.png");
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+}
+.navbar-brand
+{
+	font-family: 'Dancing Script', cursive;
+}
+.nav-item
+{
+	cursor: pointer;
 }

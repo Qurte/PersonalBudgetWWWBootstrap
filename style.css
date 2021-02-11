@@ -12,3 +12,7 @@ body
 {
 	cursor: pointer;
 }
+.text
+{
+	text-align: justify !important;
+}

@@ -63,21 +63,79 @@
 	</header>
 	<main> 
 		<section> 
-			<div class="container mt-5 bg-light col-md-4 ">
+			<div class="container mt-5 bg-light col-lg-4 ">
 				<header>
 					<h1 class="h3 fw-bold text-center">
-						Menu Główne
+						Dodaj Wydatek
 					</h1> 
 				</header>
-				<form action="addIncome.html">
-					<button class="col-12 btn btn-success btn-lg btn-block mb-3 mt-3" type="submit"> DODAJ PRZYCHÓD </button>
+				<form action="mainMenu.html">
+					<div class="row ">
+						<div class="col-12">
+							<label for="amount" class="form-label mb-0"> Kowota wydatku: </label>
+							<input id="amount" type="number" step="0.01" class="form-control" placeholder="25,00 zł" required>
+							<div class="invalid-feedback">
+								Kwota jest wymagane.
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<label for="date" class="form-label mt-2 mb-0"> Data wydatku: </label>
+							<input id="date" type="date" class="form-control" required>
+							<div class="invalid-feedback">
+								Wpisanie daty jest wymagane.
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<label for="category" class="form-label mt-2 mb-0">Katygoria wydatku:</label>
+							<select class="form-select" id="category">
+							  <option selected>Bez kategorii</option>
+							  <option value="salary">Wynagrodzenie</option>
+							  <option value="bankInterest">Odsteki Bankowe</option>
+							  <option value="allegro">Sprzedaż na allegro</option>
+							  <option value="other">inne</option>
+							</select>
+						 </div>
+					</div>
+					
+					<fieldset class="row mb-3 mt-3">
+						<legend class="col-form-label col-sm-4 mt-2">Metoda płatności:</legend>
+						<div class="col-sm-8">
+						  <div class="form-check">
+							<input class="form-check-input" type="radio" name="gridRadios" id="cash" value="cash" checked>
+							<label class="form-check-label" for="cash">
+							  Gotówka
+							</label>
+						  </div>
+						  <div class="form-check">
+							<input class="form-check-input" type="radio" name="gridRadios" id="creditCart" value="creditCart">
+							<label class="form-check-label" for="creditCart">
+							  Karta kredytowa
+							</label>
+						  </div>
+						  <div class="form-check disabled">
+							<input class="form-check-input" type="radio" name="gridRadios" id="debitCard" value="debitCard">
+							<label class="form-check-label" for="debitCard">
+							  Karta debetowa
+							</label>
+						  </div>
+						</div>
+					</fieldset>
+										
+					<hr class="my-3">
+					
+					<div>
+					  <label for="comment" class="form-label mb-0">Komentarz:</label>
+					  <textarea class="form-control" id="comment" rows="3"></textarea>
+					</div>
+					
+					<hr class="my-4">
+					<button class="col-12 btn btn-success btn-lg btn-block mb-3" type="submit"> Dodaj Wydatek </button>
 				</form>
-				<form action="addExpense.html">
-					<button class="col-12 btn btn-success btn-lg btn-block mb-3 mt-3" type="submit"> DODAJ WYDATEK</button>
-				</form>
-				<form action="balance.html">
-					<button class="col-12 btn btn-success btn-lg btn-block mb-3 mt-3" type="submit"> POKAŻ BILANS</button>
-				</form>
+				
 			</div>
 		</section> 
 	</main>

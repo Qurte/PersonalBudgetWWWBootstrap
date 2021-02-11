@@ -62,6 +62,7 @@
 	
 	</header>
 	<main> 
+	
 		<section> 
 			<div class="container mt-5 bg-light col-lg-8 ">
 				<header>
@@ -69,7 +70,35 @@
 						Bilans
 					</h1> 
 				</header>
-				<table class="table">
+				
+				<button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#window">
+				  Wybierz przedział czasowy
+				</button>
+
+				<div class="modal fade" id="window" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+					<div class="modal-content">
+					  <div class="modal-header">
+						<h5 class="modal-title" id="ModalLabel">Wybierz przedział czasowy</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					  </div>
+					  <div class="modal-body">
+						  <h5>Wybierz date początkową: </h5>
+						  <input id="startDate" type="date" class="form-control" required>
+						  <hr>
+						  <h5>Wybierz date Końcową: </h5>
+						  <input id="endDate" type="date" class="form-control" required>
+						</div>
+					  <div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+						<button type="button" class="btn btn-success">Pokaż bilans</button>
+					  </div>
+					</div>
+				  </div>
+				</div>
+
+
+				<table class="table mt-3">
 				  <thead>
 					<tr>
 					  <th scope="col">#</th>
@@ -93,7 +122,7 @@
 					</tr>
 					<tr class="table-danger">
 					  <th scope="row">3</th>
-					  <td>Zapkupy</td>
+					  <td>Zakupy</td>
 					  <td>01.01.2021</td>
 					  <td>-150,00 zł</td>
 					</tr>

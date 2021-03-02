@@ -1,3 +1,11 @@
+<?php
+	session_start();
+	if(!isset($_SESSION['id_user']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+?>
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head> 
@@ -27,7 +35,7 @@
 	<header>
 		
 		<nav class="navbar navbar-dark bg-success navbar-expand-lg">
-			<a class="navbar-brand ms-3" href="index.html"> Budżet osobisty </a>
+			<a class="navbar-brand ms-3" href="index.php"> Budżet osobisty </a>
 			
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="przełącznik nawigacji">
 				<span class="navbar-toggler-icon"> </span>
@@ -41,17 +49,17 @@
 						
 							<div class="dropdown-menu mt-2" aria-labelledby="submenu">
 								
-								<a class="dropdown-item" href="addIncome.html"> Dodaj przychód </a>
+								<a class="dropdown-item" href="addIncome.php"> Dodaj przychód </a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="addExpense.html"> Dodaj wydatek </a>
+								<a class="dropdown-item" href="addExpense.php"> Dodaj wydatek </a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="balance.html"> Pokaż bilans </a>
+								<a class="dropdown-item" href="balance.php"> Pokaż bilans </a>
 								
 							</div>
 					</div>
-					<a class="nav-item nav-link" href="aboutUs.html"> O nas </a>
-					<a class="nav-item nav-link" href="contact.html"> Kontakt </a>
-					<a class="nav-item nav-link" href="index.html"> Wyloguj </a>
+					<a class="nav-item nav-link" href="aboutUs.php"> O nas </a>
+					<a class="nav-item nav-link" href="contact.php"> Kontakt </a>
+					<a class="nav-item nav-link" href="logout.php"> Wyloguj </a>
 					
 				</div>
 				
@@ -66,13 +74,13 @@
 			<div class="container mt-5 bg-light col-lg-4 ">
 				<header>
 					<h1 class="h3 fw-bold text-center">
-						Dodaj Wydatek
+						Dodaj Przychód
 					</h1> 
 				</header>
 				<form action="mainMenu.html">
 					<div class="row ">
 						<div class="col-12">
-							<label for="amount" class="form-label mb-0"> Kowota wydatku: </label>
+							<label for="amount" class="form-label mb-0"> Kowota przychodu: </label>
 							<input id="amount" type="number" step="0.01" class="form-control" placeholder="25,00 zł" required>
 							<div class="invalid-feedback">
 								Kwota jest wymagane.
@@ -81,7 +89,7 @@
 					</div>
 					<div class="row">
 						<div class="col-12">
-							<label for="date" class="form-label mt-2 mb-0"> Data wydatku: </label>
+							<label for="date" class="form-label mt-2 mb-0"> Data przychodu: </label>
 							<input id="date" type="date" class="form-control" required>
 							<div class="invalid-feedback">
 								Wpisanie daty jest wymagane.
@@ -90,54 +98,17 @@
 					</div>
 					<div class="row">
 						<div class="col-12">
-							<label for="category" class="form-label mt-2 mb-0">Katygoria wydatku:</label>
+							<label for="category" class="form-label mt-2 mb-0">Katygoria przychodu:</label>
 							<select class="form-select" id="category">
 							  <option selected>Bez kategorii</option>
-								<option value="food"> Jedzenie</option>
-								<option value="flat" > Mieszkanie </option>
-								<option value="transport"> Transport </option>
-								<option value="telecommunication"> Telekomunikacja </option>
-								<option value="healthcare"> Opieka zdrowotna </option>
-								<option value="clothes"> Ubrania </option>
-								<option value="hygene"> Higiena </option>
-								<option value="kids"> Dzieci </option>
-								<option value="entertainment"> Rozrywka </option>
-								<option value="trip"> Wycieczka </option>
-								<option value="training"> Szkolenia </option>
-								<option value="books"> Książki </option>
-								<option value="savings"> Oszczędności </option>
-								<option value="pension"> Na złotą jesień, czyli emeryturę </option>
-								<option value="debts"> Spłata długów </option>
-								<option value="donation"> Darowizna </option>
-								<option value="other">  Inne wydatki</option>
+							  <option value="salary">Wynagrodzenie</option>
+							  <option value="bankInterest">Odsteki Bankowe</option>
+							  <option value="allegro">Sprzedaż na allegro</option>
+							  <option value="other">inne</option>
 							</select>
 						 </div>
 					</div>
 					
-					<fieldset class="row mb-3 mt-3">
-						<legend class="col-form-label col-sm-4 mt-2">Metoda płatności:</legend>
-						<div class="col-sm-8">
-						  <div class="form-check">
-							<input class="form-check-input" type="radio" name="gridRadios" id="cash" value="cash" checked>
-							<label class="form-check-label" for="cash">
-							  Gotówka
-							</label>
-						  </div>
-						  <div class="form-check">
-							<input class="form-check-input" type="radio" name="gridRadios" id="creditCart" value="creditCart">
-							<label class="form-check-label" for="creditCart">
-							  Karta kredytowa
-							</label>
-						  </div>
-						  <div class="form-check disabled">
-							<input class="form-check-input" type="radio" name="gridRadios" id="debitCard" value="debitCard">
-							<label class="form-check-label" for="debitCard">
-							  Karta debetowa
-							</label>
-						  </div>
-						</div>
-					</fieldset>
-										
 					<hr class="my-3">
 					
 					<div>
@@ -146,7 +117,7 @@
 					</div>
 					
 					<hr class="my-4">
-					<button class="col-12 btn btn-success btn-lg btn-block mb-3" type="submit"> Dodaj Wydatek </button>
+					<button class="col-12 btn btn-success btn-lg btn-block mb-3" type="submit"> Dodaj Przychód </button>
 				</form>
 				
 			</div>

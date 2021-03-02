@@ -1,3 +1,12 @@
+<?php
+	session_start();
+	if(isset($_SESSION['id_user']))
+	{
+		header('Location: mainMenu.php');
+		exit();
+	}	
+?>
+
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head> 
@@ -27,7 +36,7 @@
 	<header>
 		
 		<nav class="navbar navbar-dark bg-success navbar-expand-lg">
-			<a class="navbar-brand ms-3" href="index.html"> Budżet osobisty </a>
+			<a class="navbar-brand ms-3" href="index.php"> Budżet osobisty </a>
 			
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="przełącznik nawigacji">
 				<span class="navbar-toggler-icon"> </span>
@@ -37,23 +46,28 @@
 			
 				<div class="navbar-nav me-auto">
 					
-					<a class="nav-item nav-link active" href="index.html"> Start </a>
-					<a class="nav-item nav-link" href="aboutUs.html"> O nas </a>
-					<a class="nav-item nav-link" href="contact.html"> Kontakt </a>
-					<a class="nav-item nav-link" href="register.html"> Zarejestruj się </a>
+					<a class="nav-item nav-link active" href="index.php"> Start </a>
+					<a class="nav-item nav-link" href="aboutUs.php"> O nas </a>
+					<a class="nav-item nav-link" href="contact.php"> Kontakt </a>
+					<a class="nav-item nav-link" href="register.php"> Zarejestruj się </a>
 					
 				</div>
-				<form action="mainMenu.html">
+				<form method="post" action="login.php">
 					<div class="row g-2 align-items-center">
 						<div class="col-auto">
-							<input class="form-control " type="text" placeholder="Login" aria-label="wpisz login">
+							<input class="form-control " type="text" placeholder="Login" aria-label="wpisz login" name="login" <?= isset($_SESSION['given_login'])? 'value="'.$_SESSION['given_login'].'"' : ''?>>
 						</div>
 						<div class="col-auto">
-							<input class="form-control" type="password" placeholder="Hasło" aria-label="wpisz hasło">
+							<input class="form-control" type="password" placeholder="Hasło" aria-label="wpisz hasło" name="password">
 						</div>
 						<div class="col-auto me-2">
 							<button class="btn btn-light" type="submit"> Zaloguj </button>
 						</div>
+						<?php
+							if(isset($_SESSION['bad_attempt']))
+								echo '<div class="col-auto me-2"> <p style="color:#c00005">Niepoprawny login lub hasło! </p> </div>';
+							unset($_SESSION['bad_attempt']);
+						?>
 					</div>
 				</form>
 				

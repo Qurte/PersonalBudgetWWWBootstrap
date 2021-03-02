@@ -16,3 +16,8 @@ body
 {
 	text-align: justify !important;
 }
+.error
+{
+	color: red;
+	font-size: 12px;
+}

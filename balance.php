@@ -1,3 +1,11 @@
+<?php
+	session_start();
+	if(!isset($_SESSION['id_user']))
+	{
+		header('Location: index.php');
+		exit();
+	}
+?>
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head> 
@@ -27,7 +35,7 @@
 	<header>
 		
 		<nav class="navbar navbar-dark bg-success navbar-expand-lg">
-			<a class="navbar-brand ms-3" href="index.html"> Budżet osobisty </a>
+			<a class="navbar-brand ms-3" href="index.php"> Budżet osobisty </a>
 			
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="przełącznik nawigacji">
 				<span class="navbar-toggler-icon"> </span>
@@ -41,17 +49,17 @@
 						
 							<div class="dropdown-menu mt-2" aria-labelledby="submenu">
 								
-								<a class="dropdown-item" href="addIncome.html"> Dodaj przychód </a>
+								<a class="dropdown-item" href="addIncome.php"> Dodaj przychód </a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="addExpense.html"> Dodaj wydatek </a>
+								<a class="dropdown-item" href="addExpense.php"> Dodaj wydatek </a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="balance.html"> Pokaż bilans </a>
+								<a class="dropdown-item" href="balance.php"> Pokaż bilans </a>
 								
 							</div>
 					</div>
-					<a class="nav-item nav-link" href="aboutUs.html"> O nas </a>
-					<a class="nav-item nav-link" href="contact.html"> Kontakt </a>
-					<a class="nav-item nav-link" href="index.html"> Wyloguj </a>
+					<a class="nav-item nav-link" href="aboutUs.php"> O nas </a>
+					<a class="nav-item nav-link" href="contact.php"> Kontakt </a>
+					<a class="nav-item nav-link" href="logout.php"> Wyloguj </a>
 					
 				</div>
 				

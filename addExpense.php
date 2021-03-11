@@ -45,7 +45,7 @@
 			
 				<div class="navbar-nav me-auto">
 					<div class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle active" href="mainMenu.html" data-bs-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"> Menu Główne </a>
+						<a class="nav-link dropdown-toggle active" href="mainMenu.php" data-bs-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"> Menu Główne </a>
 						
 							<div class="dropdown-menu mt-2" aria-labelledby="submenu">
 								
@@ -77,7 +77,7 @@
 						Dodaj Wydatek
 					</h1> 
 				</header>
-				<form action="mainMenu.html">
+				<form action="mainMenu.php">
 					<div class="row ">
 						<div class="col-12">
 							<label for="amount" class="form-label mb-0"> Kowota wydatku: </label>

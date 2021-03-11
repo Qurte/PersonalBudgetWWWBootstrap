@@ -21,7 +21,7 @@
 			if ($amount <= 0)
 			{
 				$is_ok = false;
-				$_SESSION['e_amount'] = "kwota przzychodu musi być większa od 0";
+				$_SESSION['e_amount'] = "kwota przychodu musi być większa od 0";
 			}
 			
 			
@@ -47,6 +47,7 @@
 				$queryIncome->execute($data);
 				
 				$_SESSION['added_income']="Przychód został dodany";
+				
 			}
 		}
 	}
@@ -128,18 +129,28 @@
 						<div class="col-12">
 							<label for="amount" class="form-label mb-0"> Kowota przychodu: </label>
 							<input id="amount" type="number" step="0.01" class="form-control" placeholder="25,00 zł" name="amount" required>
-							<div class="invalid-feedback">
-								Kwota jest wymagane.
-							</div>
+							
+							<?php
+								if(isset($_SESSION['e_amount']))
+								{
+									echo '<div class="error">'.$_SESSION['e_amount'].'</div>';
+									unset($_SESSION['e_amount']);
+								}
+							?>
+							
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-12">
 							<label for="date" class="form-label mt-2 mb-0"> Data przychodu: </label>
 							<input id="date" type="date" class="form-control" name="date" required>
-							<div class="invalid-feedback">
-								Wpisanie daty jest wymagane.
-							</div>
+							<?php
+								if(isset($_SESSION['e_date']))
+								{
+									echo '<div class="error">'.$_SESSION['e_date'].'</div>';
+									unset($_SESSION['e_date']);
+								}
+							?>
 						</div>
 					</div>
 					<div class="row">

@@ -1,12 +1,9 @@
 <?php
 	session_start();
-	if(!isset($_SESSION['id_user']))
-	{
-		header('Location: index.php');
-		exit();
-	}
+	if(isset($_SESSION['e_login'])) unset($_SESSION['e_login']);
+	if(isset($_SESSION['e_email'])) unset($_SESSION['e_email']);
+	if(isset($_SESSION['e_password'])) unset($_SESSION['e_password']);
 ?>
-
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head> 
@@ -45,24 +42,31 @@
 			<div class="collapse navbar-collapse" id="mainmenu" >
 			
 				<div class="navbar-nav me-auto">
-					<div class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle active" href="mainMenu.php" data-bs-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"> Menu Główne </a>
-						
-							<div class="dropdown-menu mt-2" aria-labelledby="submenu">
-								
-								<a class="dropdown-item" href="addIncome.php"> Dodaj przychód </a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="addExpense.php"> Dodaj wydatek </a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="balance.php"> Pokaż bilans </a>
-								
-							</div>
-					</div>
+					
+					<a class="nav-item nav-link" href="index.php"> Start </a>
 					<a class="nav-item nav-link" href="aboutUs.php"> O nas </a>
 					<a class="nav-item nav-link" href="contact.php"> Kontakt </a>
-					<a class="nav-item nav-link" href="logout.php"> Wyloguj </a>
+					<a class="nav-item nav-link active" href="register.php"> Zarejestruj się </a>
 					
 				</div>
+				<form method="post" action="login.php">
+					<div class="row g-2 align-items-center">
+						<div class="col-auto">
+							<input class="form-control " type="text" placeholder="Login" aria-label="wpisz login" name="login" <?= isset($_SESSION['given_login'])? 'value="'.$_SESSION['given_login'].'"' : ''?>>
+						</div>
+						<div class="col-auto">
+							<input class="form-control" type="password" placeholder="Hasło" aria-label="wpisz hasło" name="password">
+						</div>
+						<div class="col-auto me-2">
+							<button class="btn btn-light" type="submit"> Zaloguj </button>
+						</div>
+						<?php
+							if(isset($_SESSION['bad_attempt']))
+								echo '<div class="col-auto me-2"> <p style="color:#c00005">Niepoprawny login lub hasło! </p> </div>';
+							unset($_SESSION['bad_attempt']);
+						?>
+					</div>
+				</form>
 				
 			</div>
 			
@@ -74,19 +78,11 @@
 		<section> 
 			<div class="container mt-5 bg-light col-md-4 ">
 				<header>
-					<h1 class="h3 fw-bold text-center">
-						Menu Główne
+					<h1 class="h3 fw-bold text-center text-lg-start">
+						Rejestracja udana!
 					</h1> 
 				</header>
-				<form action="addIncome.php">
-					<button class="col-12 btn btn-success btn-lg btn-block mb-3 mt-3" type="submit"> DODAJ PRZYCHÓD </button>
-				</form>
-				<form action="addExpense.php">
-					<button class="col-12 btn btn-success btn-lg btn-block mb-3 mt-3" type="submit"> DODAJ WYDATEK</button>
-				</form>
-				<form action="balance.php">
-					<button class="col-12 btn btn-success btn-lg btn-block mb-3 mt-3" type="submit"> POKAŻ BILANS</button>
-				</form>
+				<p>Możesz już zalogować się na swoje konto </p>
 			</div>
 		</section> 
 	</main>

@@ -5,6 +5,51 @@
 		header('Location: index.php');
 		exit();
 	}
+	else
+	{
+		if(isset($_POST['amount']))
+		{
+			$is_ok = true;
+			
+			$amount = $_POST['amount'];
+			$date = $_POST['date'];
+			$category = $_POST['category'];
+			$comment = $_POST['comment'];
+			
+			list($y, $m, $d) = explode('-', $date);
+			
+			if ($amount <= 0)
+			{
+				$is_ok = false;
+				$_SESSION['e_amount'] = "kwota przzychodu musi być większa od 0";
+			}
+			
+			
+			
+			if(!checkdate($m, $d, $y))
+			{
+				$is_ok = false;
+				$_SESSION['e_date'] = "podana data jest nie poprawna";
+			}
+			
+			if($is_ok)
+			{
+				require_once 'database.php';
+				$data = 
+				[
+					'id_user' => $_SESSION['id_user'],
+					'date' => $date,
+					'category' => $category,
+					'comment' => $comment,
+					'amount' => $amount,
+				];
+				$queryIncome = $db->prepare('INSERT INTO income VALUES(NULL,:id_user, :date, :category, :comment, :amount)');
+				$queryIncome->execute($data);
+				
+				$_SESSION['added_income']="Przychód został dodany";
+			}
+		}
+	}
 ?>
 <!DOCTYPE HTML>
 <html lang="pl"> 
@@ -31,7 +76,7 @@
 
 </head>
 <body>
-	
+
 	<header>
 		
 		<nav class="navbar navbar-dark bg-success navbar-expand-lg">
@@ -45,7 +90,7 @@
 			
 				<div class="navbar-nav me-auto">
 					<div class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle active" href="mainMenu.html" data-bs-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"> Menu Główne </a>
+						<a class="nav-link dropdown-toggle active" href="mainMenu.php" data-bs-toggle="dropdown" role="button" aria-expanded="false" id="submenu" aria-haspopup="true"> Menu Główne </a>
 						
 							<div class="dropdown-menu mt-2" aria-labelledby="submenu">
 								
@@ -77,11 +122,12 @@
 						Dodaj Przychód
 					</h1> 
 				</header>
-				<form action="mainMenu.html">
+				<form method="post">
+				
 					<div class="row ">
 						<div class="col-12">
 							<label for="amount" class="form-label mb-0"> Kowota przychodu: </label>
-							<input id="amount" type="number" step="0.01" class="form-control" placeholder="25,00 zł" required>
+							<input id="amount" type="number" step="0.01" class="form-control" placeholder="25,00 zł" name="amount" required>
 							<div class="invalid-feedback">
 								Kwota jest wymagane.
 							</div>
@@ -90,7 +136,7 @@
 					<div class="row">
 						<div class="col-12">
 							<label for="date" class="form-label mt-2 mb-0"> Data przychodu: </label>
-							<input id="date" type="date" class="form-control" required>
+							<input id="date" type="date" class="form-control" name="date" required>
 							<div class="invalid-feedback">
 								Wpisanie daty jest wymagane.
 							</div>
@@ -99,7 +145,7 @@
 					<div class="row">
 						<div class="col-12">
 							<label for="category" class="form-label mt-2 mb-0">Katygoria przychodu:</label>
-							<select class="form-select" id="category">
+							<select class="form-select" id="category" name="category">
 							  <option selected>Bez kategorii</option>
 							  <option value="salary">Wynagrodzenie</option>
 							  <option value="bankInterest">Odsteki Bankowe</option>
@@ -113,14 +159,22 @@
 					
 					<div>
 					  <label for="comment" class="form-label mb-0">Komentarz:</label>
-					  <textarea class="form-control" id="comment" rows="3"></textarea>
+					  <textarea class="form-control" id="comment" rows="3" name="comment"></textarea>
 					</div>
 					
 					<hr class="my-4">
 					<button class="col-12 btn btn-success btn-lg btn-block mb-3" type="submit"> Dodaj Przychód </button>
 				</form>
-				
+				<?php
+					if(isset($_SESSION['added_income']))
+					{
+						echo '<p>'.$_SESSION['added_income'].'</p>';
+						unset($_SESSION['added_income']);
+					}
+				?>
 			</div>
+			
+			
 		</section> 
 	</main>
 	<script src="js/bootstrap.min.js"> </script>

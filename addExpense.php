@@ -5,6 +5,55 @@
 		header('Location: index.php');
 		exit();
 	}
+	else
+	{
+		if(isset($_POST['amount']))
+		{
+			$is_ok = true;
+			
+			$amount = $_POST['amount'];
+			$date = $_POST['date'];
+			$category = $_POST['category'];
+			$comment = $_POST['comment'];
+			$payment_method = $_POST['payment_method'];
+			
+			
+			list($y, $m, $d) = explode('-', $date);
+			
+			if ($amount >= 0)
+			{
+				$is_ok = false;
+				$_SESSION['e_amount'] = "kwota wydatku musi być mniejsza od 0";
+			}
+			
+			
+			
+			if(!checkdate($m, $d, $y))
+			{
+				$is_ok = false;
+				$_SESSION['e_date'] = "podana data jest nie poprawna";
+			}
+			
+			if($is_ok)
+			{
+				
+				require_once 'database.php';
+				$data = 
+				[
+					'id_user' => $_SESSION['id_user'],
+					'date' => $date,
+					'category' => $category,
+					'comment' => $comment,
+					'amount' => $amount,
+					'payment_method' => $payment_method,
+				];
+				$queryIncome = $db->prepare('INSERT INTO expanse VALUES(NULL,:id_user, :date, :category, :payment_method, :comment, :amount)');
+				$queryIncome->execute($data);
+				
+				$_SESSION['added_expanse']="Wydatek został dodany";
+			}
+		}
+	}
 ?>
 <!DOCTYPE HTML>
 <html lang="pl"> 
@@ -77,29 +126,39 @@
 						Dodaj Wydatek
 					</h1> 
 				</header>
-				<form action="mainMenu.php">
+				<form method="post">
 					<div class="row ">
 						<div class="col-12">
 							<label for="amount" class="form-label mb-0"> Kowota wydatku: </label>
-							<input id="amount" type="number" step="0.01" class="form-control" placeholder="25,00 zł" required>
-							<div class="invalid-feedback">
-								Kwota jest wymagane.
-							</div>
+							<input id="amount" type="number" step="0.01" class="form-control" placeholder="-25,00 zł"  name="amount" required>
+							
 						</div>
+						<?php
+							if(isset($_SESSION['e_amount']))
+							{
+								echo '<div class="error">'.$_SESSION['e_amount'].'</div>';
+								unset($_SESSION['e_amount']);
+							}
+						?>
 					</div>
 					<div class="row">
 						<div class="col-12">
 							<label for="date" class="form-label mt-2 mb-0"> Data wydatku: </label>
-							<input id="date" type="date" class="form-control" required>
-							<div class="invalid-feedback">
-								Wpisanie daty jest wymagane.
-							</div>
+							<input id="date" type="date" class="form-control" name="date" required>
+							
 						</div>
+						<?php
+							if(isset($_SESSION['e_date']))
+							{
+								echo '<div class="error">'.$_SESSION['e_date'].'</div>';
+								unset($_SESSION['e_date']);
+							}
+						?>
 					</div>
 					<div class="row">
 						<div class="col-12">
 							<label for="category" class="form-label mt-2 mb-0">Katygoria wydatku:</label>
-							<select class="form-select" id="category">
+							<select class="form-select" id="category" name="category">
 							  <option selected>Bez kategorii</option>
 								<option value="food"> Jedzenie</option>
 								<option value="flat" > Mieszkanie </option>
@@ -122,41 +181,34 @@
 						 </div>
 					</div>
 					
-					<fieldset class="row mb-3 mt-3">
-						<legend class="col-form-label col-sm-4 mt-2">Metoda płatności:</legend>
-						<div class="col-sm-8">
-						  <div class="form-check">
-							<input class="form-check-input" type="radio" name="gridRadios" id="cash" value="cash" checked>
-							<label class="form-check-label" for="cash">
-							  Gotówka
-							</label>
-						  </div>
-						  <div class="form-check">
-							<input class="form-check-input" type="radio" name="gridRadios" id="creditCart" value="creditCart">
-							<label class="form-check-label" for="creditCart">
-							  Karta kredytowa
-							</label>
-						  </div>
-						  <div class="form-check disabled">
-							<input class="form-check-input" type="radio" name="gridRadios" id="debitCard" value="debitCard">
-							<label class="form-check-label" for="debitCard">
-							  Karta debetowa
-							</label>
-						  </div>
+					<div class="row">
+						<div class="col-12">
+							<label for="payment_method" class="form-label mt-2 mb-0">Metoda płatności:</label>
+							<select class="form-select" id="payment_method" name="payment_method">
+							  <option value="cash" selected>Gotówka</option>
+								<option value="creditCart"> Karta debetowa</option>
+								<option value="debitCard" > Karta kredytowa </option>
+							</select>
 						</div>
-					</fieldset>
+					</div>
 										
 					<hr class="my-3">
 					
 					<div>
 					  <label for="comment" class="form-label mb-0">Komentarz:</label>
-					  <textarea class="form-control" id="comment" rows="3"></textarea>
+					  <textarea class="form-control" id="comment" name="comment"rows="3"></textarea>
 					</div>
 					
 					<hr class="my-4">
 					<button class="col-12 btn btn-success btn-lg btn-block mb-3" type="submit"> Dodaj Wydatek </button>
 				</form>
-				
+				<?php
+					if(isset($_SESSION['added_expanse']))
+					{
+						echo '<p>'.$_SESSION['added_expanse'].'</p>';
+						unset($_SESSION['added_expanse']);
+					}
+				?>
 			</div>
 		</section> 
 	</main>

@@ -20,10 +20,9 @@
 			
 			list($y, $m, $d) = explode('-', $date);
 			
-			if ($amount >= 0)
+			if ($amount < 0)
 			{
-				$is_ok = false;
-				$_SESSION['e_amount'] = "kwota wydatku musi być mniejsza od 0";
+				$amount = $amount * (-1);
 			}
 			
 			

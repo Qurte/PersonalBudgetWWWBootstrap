@@ -37,6 +37,7 @@
 			
 			
 		}
+		
 	}
 	
 ?>
@@ -182,10 +183,6 @@
 					</tr>
 					
 				  </tbody>
-				  
-				
-				
-				
 				  <thead>
 					<tr>
 					  <th scope="col" >Kategoria</th>
@@ -199,9 +196,10 @@
 						{
 							echo "<tr class='table-danger'> <td>{$expanse['category']}</td>
 								<td>{$expanse['date']} </td>
-								<td>{$expanse['amount']} </td> </tr>";
+								<td>-{$expanse['amount']} </td> </tr>";
 							$sumExpanse += $expanse['amount'];
 						}
+						$sumExpanse = $sumExpanse * (-1);
 					
 					?>
 					<tr >
@@ -215,10 +213,12 @@
 				
 					<thead> 
 						<tr>
+							<th></th>
 							<th scope="col"> Stan portfela: </th>
 							<th scope="col"><?php 
 							$sum = $sumIncome+$sumExpanse;
-							echo $sum?> zł</th>
+							
+							echo round($sum,2);?> zł</th>
 							
 							
 						</tr>

@@ -5,6 +5,40 @@
 		header('Location: index.php');
 		exit();
 	}
+	else
+	{
+		require_once "database.php";
+		$sumIncome = 0;
+		$sumExpanse = 0;
+		$userId = $_SESSION["id_user"];
+		
+		if(isset($_POST['firstDate']))
+		{
+			$starting_date = $_POST['firstDate'];
+			$end_date = $_POST['secendDate'];
+
+			
+			$incomeQuery = $db -> query("SELECT *  FROM income WHERE id_user= '$userId' AND date BETWEEN '$starting_date' AND '$end_date' ORDER BY date DESC");
+			$incomes = $incomeQuery->fetchAll();
+			
+			$expanseQuery = $db -> query("SELECT category, date, amount FROM expanse WHERE id_user='$userId' AND date BETWEEN '$starting_date' AND '$end_date' ORDER BY date DESC");
+			$expanses = $expanseQuery->fetchAll();
+			
+		}
+		else
+		{
+			
+			$incomeQuery = $db -> query("SELECT *  FROM income WHERE id_user= '$userId' ORDER BY date DESC");
+			$incomes = $incomeQuery->fetchAll();
+			
+			$expanseQuery = $db -> query("SELECT category, date, amount FROM expanse WHERE id_user='$userId' ORDER BY date DESC");
+			$expanses = $expanseQuery->fetchAll();
+			
+			
+			
+		}
+	}
+	
 ?>
 <!DOCTYPE HTML>
 <html lang="pl"> 
@@ -82,65 +116,113 @@
 				<button type="button" class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#window">
 				  Wybierz przedział czasowy
 				</button>
-
-				<div class="modal fade" id="window" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-				  <div class="modal-dialog">
-					<div class="modal-content">
-					  <div class="modal-header">
-						<h5 class="modal-title" id="ModalLabel">Wybierz przedział czasowy</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					  </div>
-					  <div class="modal-body">
-						  <h5>Wybierz date początkową: </h5>
-						  <input id="startDate" type="date" class="form-control" required>
-						  <hr>
-						  <h5>Wybierz date Końcową: </h5>
-						  <input id="endDate" type="date" class="form-control" required>
+				
+				<form method="post">
+					<div class="modal fade" id="window" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="ModalLabel">Wybierz przedział czasowy</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									
+								  <h5>Wybierz date początkową: </h5>
+								  <input id="startDate" type="date" name="firstDate" class="form-control" required>
+								  <hr>
+								  <h5>Wybierz date Końcową: </h5>
+								  <input id="endDate" type="date" name="secendDate" class="form-control" required>
+									
+								</div>
+							  <div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+								<button type="submit" class="btn btn-success">Pokaż bilans</button>
+							  </div>
+							</div>
 						</div>
-					  <div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
-						<button type="button" class="btn btn-success">Pokaż bilans</button>
-					  </div>
 					</div>
-				  </div>
-				</div>
-
-
-				<table class="table mt-3">
+				</form>
+				
+				<table class="table">
+					<tr >
+					  <td> Przychody: </td>
+					  <td></td>
+					  <td></td>
+					</tr>
+				</table>
+				<table class="table">
+					
 				  <thead>
 					<tr>
-					  <th scope="col">#</th>
 					  <th scope="col">Kategoria</th>
 					  <th scope="col">Data</th>
 					  <th scope="col">Kwota</th>
 					</tr>
 				  </thead>
 				  <tbody>
-					<tr class="table-success">
-					  <th scope="row">1</th>
-					  <td>Wynagrodzenie</td>
-					  <td>18.01.2021</td>
-					  <td>4500,00 zł</td>
-					</tr>
-					<tr class="table-danger">
-					  <th scope="row">2</th>
-					  <td>Mandat</td>
-					  <td>01.01.2021</td>
-					  <td>-400,00 zł</td>
-					</tr>
-					<tr class="table-danger">
-					  <th scope="row">3</th>
-					  <td>Zakupy</td>
-					  <td>01.01.2021</td>
-					  <td>-150,00 zł</td>
+					<?php
+						foreach($incomes as $income)
+						{
+							echo "<tr class='table-success'> <td>{$income['category']}</td>
+								<td>{$income['date']} </td>
+								<td>{$income['amount']} </td> </tr>";
+							$sumIncome += $income['amount'];
+						}
+					
+					?>
+					<tr >
+					  <td> </td>
+					  <td>Suma:</td>
+					  <td><?php echo $sumIncome ?></td>
 					</tr>
 					<tr >
-					  <th scope="row"></th>
+					  <td> Wydatki: </td>
 					  <td></td>
-					  <td>Suma</td>
-					  <td>3900,00 zł</td>
+					  <td></td>
 					</tr>
+					
 				  </tbody>
+				  
+				
+				
+				
+				  <thead>
+					<tr>
+					  <th scope="col" >Kategoria</th>
+					  <th scope="col">Data</th>
+					  <th scope="col">Kwota</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<?php
+						foreach($expanses as $expanse)
+						{
+							echo "<tr class='table-danger'> <td>{$expanse['category']}</td>
+								<td>{$expanse['date']} </td>
+								<td>{$expanse['amount']} </td> </tr>";
+							$sumExpanse += $expanse['amount'];
+						}
+					
+					?>
+					<tr >
+					  <td> </td>
+					  <td>Suma:</td>
+					  <td><?php echo $sumExpanse ?></td>
+					</tr>
+					
+					
+				  </tbody>
+				
+					<thead> 
+						<tr>
+							<th scope="col"> Stan portfela: </th>
+							<th scope="col"><?php 
+							$sum = $sumIncome+$sumExpanse;
+							echo $sum?> zł</th>
+							
+							
+						</tr>
+					</thead>
 				</table>
 			</div>
 		</section> 
